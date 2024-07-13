@@ -1,0 +1,13 @@
+{
+  "name": "game.feature",
+  "displayName": "GameFeature",
+  "author": { "name": "MikeBui.", "url": "" },
+  "version": "1.0.0",
+  "unity": "2022.3",
+  "description": "Common Feature",
+  "keywords": [],
+  "license": "MIT",
+  "category": "Feature",
+  "dependencies": {
+  }
+}
