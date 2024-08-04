@@ -3,7 +3,7 @@ namespace Feature.Modules.CommonUI.Runtime.Screen
     using Cysharp.Threading.Tasks;
     using GameCore.Services.Message;
     using GameCore.Services.ScreenFlow.Base.Screen;
-    using global::Modules.Extensions.AsyncProgress;
+    using GameExtensions.AsyncProgress;
 
     public abstract class LoadingScreenPresenter<TView> : BaseScreenPresenter<TView> where TView : BaseScreenView
     {

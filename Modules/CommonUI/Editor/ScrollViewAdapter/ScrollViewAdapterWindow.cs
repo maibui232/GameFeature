@@ -3,7 +3,7 @@ namespace CommonUI.Modules.CommonUI.Editor.ScrollViewAdapter
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using global::Modules.Extensions;
+    using GameExtensions.Reflection;
     using Plugins.EnhancedScroller_v2.Plugins;
     using UnityEditor;
     using UnityEngine;
