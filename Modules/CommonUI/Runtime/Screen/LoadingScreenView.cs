@@ -1,25 +1,35 @@
 namespace Feature.Modules.CommonUI.Runtime.Screen
 {
     using Cysharp.Threading.Tasks;
+    using GameCore.Services.BlueprintFlow.BlueprintControlFlow;
     using GameCore.Services.Message;
     using GameCore.Services.ScreenFlow.Base.Screen;
     using GameExtensions.AsyncProgress;
 
     public abstract class LoadingScreenPresenter<TView> : BaseScreenPresenter<TView> where TView : BaseScreenView
     {
-        protected LoadingScreenPresenter(IMessageService messageService) : base(messageService)
+        private readonly BlueprintReaderManager blueprintReaderManager;
+
+        protected LoadingScreenPresenter
+        (
+            IMessageService        messageService,
+            BlueprintReaderManager blueprintReaderManager
+        ) : base(messageService)
         {
+            this.blueprintReaderManager = blueprintReaderManager;
         }
 
-        private IAsyncProgressHandler asyncProgressHandler;
+        private UniTaskProgressHandler asyncProgressHandler;
 
-        protected IAsyncProgressHandler AsyncProgressHandler => this.asyncProgressHandler ??= AsyncProgressTracker.CreateHandler<UniTaskProgressHandler>();
+        protected UniTaskProgressHandler AsyncProgressHandler => this.asyncProgressHandler ??= AsyncProgressTracker.CreateHandler<UniTaskProgressHandler>();
 
         public override UniTask BindData()
         {
-            this.asyncProgressHandler.ProgressChangeEvent += this.OnLoading;
-            this.asyncProgressHandler.CompletedEvent      += this.OnCompleted;
+            this.AsyncProgressHandler.ProgressChangeEvent += this.OnLoading;
+            this.AsyncProgressHandler.CompletedEvent      += this.OnCompleted;
             this.OnLoading(0);
+
+            this.AsyncProgressHandler.TrackUniTask(this.blueprintReaderManager.LoadBlueprint());
 
             return UniTask.CompletedTask;
         }

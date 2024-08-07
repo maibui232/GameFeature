@@ -64,7 +64,7 @@ namespace CommonUI.Modules.CommonUI.Editor.ScrollViewAdapter
             scrollDirectionEnumField.RegisterValueChangedCallback(this.OnChangeScrollerDirection);
             this.setupPanel.Add(scrollDirectionEnumField);
 
-            this.adapterTypes = AppDomain.CurrentDomain.GetAllDerivedTypes<EnhancedScroller>();
+            this.adapterTypes = AppDomain.CurrentDomain.GetAllTypeFromDerived<EnhancedScroller>();
             var options = this.adapterTypes.Where(type => !type.Name.Equals(nameof(EnhancedScroller)))
                .Select(type => type.Name)
                .ToList();
