@@ -23,7 +23,6 @@ namespace Feature.Modules.CommonUI.Runtime.Element.Selector
         private void Awake()
         {
             this.ValidateField();
-            this.dropdown.MultiSelect = false;
             this.dropdown.onValueChanged.AddListener(this.OnValueChange);
         }
 
