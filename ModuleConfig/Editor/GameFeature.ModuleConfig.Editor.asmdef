@@ -1,0 +1,11 @@
+{
+  "name": "GameFeature.ModuleConfig.Editor",
+  "references": [
+    "GUID:0817f3efa7db46ad8076402431b2ef88",
+    "GUID:d6b572c2a7064faf87c324338f30abb7",
+    "GUID:5bf991f1976349dc8425d4aec532e38b"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ]
+}

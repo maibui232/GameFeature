@@ -1,0 +1,8 @@
+{
+  "name": "GameFeature.ModuleConfig.Runtime",
+  "references": [
+    "GUID:d6b572c2a7064faf87c324338f30abb7",
+    "GUID:e0a0d9284734fd442899981ea5581776",
+    "GUID:b0214a6008ed146ff8f122a6a9c2f6cc"
+  ]
+}

@@ -4,7 +4,7 @@ namespace Feature.Modules.CommonUI.Runtime.Screen
     using GameCore.Services.BlueprintFlow.BlueprintControlFlow;
     using GameCore.Services.Message;
     using GameCore.Services.ScreenFlow.Base.Screen;
-    using GameExtensions.AsyncProgress;
+    using GameExtensions.Runtime.AsyncProgress;
 
     public abstract class LoadingScreenPresenter<TView> : BaseScreenPresenter<TView> where TView : BaseScreenView
     {

@@ -5,6 +5,7 @@ namespace Feature.Modules.CommonUI.Runtime.Element.ScrollAdapter
     using System.Runtime.CompilerServices;
     using Cysharp.Threading.Tasks;
     using Feature.Modules.CommonUI.Runtime.Element.ScrollAdapter.CellView;
+    using GameCore.Extensions;
     using GameCore.Extensions.VContainer;
     using GameCore.Services.ScreenFlow.Base.Item;
     using Plugins.EnhancedScroller_v2.Plugins;
