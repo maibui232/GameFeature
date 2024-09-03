@@ -1,4 +1,4 @@
-namespace Feature.Modules.CommonUI.Runtime.Element.ScrollAdapter.CellView
+namespace Modules.CommonUI.Runtime.Element.ScrollAdapter.CellView
 {
     using Plugins.EnhancedScroller_v2.Plugins;
 

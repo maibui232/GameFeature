@@ -1,4 +1,4 @@
-namespace Feature.Modules.CommonUI.Runtime.Element.Selector
+namespace Modules.CommonUI.Runtime.Element.Selector
 {
     using System.Collections.Generic;
     using TMPro;

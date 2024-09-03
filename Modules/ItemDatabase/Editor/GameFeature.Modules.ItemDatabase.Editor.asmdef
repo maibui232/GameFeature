@@ -1,0 +1,7 @@
+{
+  "name": "GameFeature.Modules.ItemDatabase.Editor",
+  "rootNamespace": "",
+  "includePlatforms": [
+    "Editor"
+  ]
+}

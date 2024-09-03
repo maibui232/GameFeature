@@ -1,4 +1,4 @@
-namespace Feature.Modules.CommonUI.Runtime.Element.ScrollAdapter.CellView
+namespace Modules.CommonUI.Runtime.Element.ScrollAdapter.CellView
 {
     using System.Collections.Generic;
     using UnityEngine;

@@ -1,11 +1,10 @@
-namespace Feature.Modules.CommonUI.Runtime.Element.ScrollAdapter
+namespace Modules.CommonUI.Runtime.Element.ScrollAdapter
 {
     using System;
     using System.Collections.Generic;
-    using Feature.Modules.CommonUI.Runtime.Element.ScrollAdapter.CellView;
     using GameCore.Extensions;
-    using GameCore.Extensions.VContainer;
     using GameCore.Services.ScreenFlow.Base.Item;
+    using Modules.CommonUI.Runtime.Element.ScrollAdapter.CellView;
     using Plugins.EnhancedScroller_v2.Plugins;
     using UnityEngine;
     using UnityEngine.UI;

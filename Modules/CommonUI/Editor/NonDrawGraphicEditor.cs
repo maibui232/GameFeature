@@ -1,7 +1,7 @@
-namespace CommonUI.Modules.CommonUI.Editor
+namespace Modules.CommonUI.Editor
 {
     using System;
-    using Feature.Modules.CommonUI.Runtime.Element;
+    using Modules.CommonUI.Runtime.Element;
     using UnityEditor;
     using UnityEditor.UI;
     using UnityEngine;

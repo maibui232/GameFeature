@@ -1,4 +1,4 @@
-namespace Feature.Modules.CommonUI.Runtime.Screen
+namespace Modules.CommonUI.Runtime.Screen
 {
     using Cysharp.Threading.Tasks;
     using GameCore.Services.BlueprintFlow.BlueprintControlFlow;

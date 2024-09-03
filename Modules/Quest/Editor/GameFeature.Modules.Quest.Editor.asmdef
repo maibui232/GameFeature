@@ -1,0 +1,7 @@
+{
+  "name": "GameFeature.Modules.Quest.Editor",
+  "rootNamespace": "",
+  "includePlatforms": [
+    "Editor"
+  ]
+}

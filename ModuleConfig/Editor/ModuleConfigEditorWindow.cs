@@ -1,12 +1,12 @@
 namespace ModuleConfig.Editor
 {
     using System;
-    using ModuleConfig.Editor.Interfaces;
     using Sirenix.OdinInspector.Editor;
     using GameExtensions.Runtime.Reflection;
     using UnityEditor;
     using UnityEngine;
     using System.IO;
+    using ModuleConfig.Runtime;
 
     public class ModuleConfigEditorWindow : OdinMenuEditorWindow
     {
@@ -22,14 +22,13 @@ namespace ModuleConfig.Editor
             const string folderPath = "Assets/Configs/Editor";
 
             var tree = new OdinMenuTree();
-            foreach (var editorModuleConfig in AppDomain.CurrentDomain.GetAllInstanceFromDerived<IEditorModuleConfig>())
+            foreach (var type in AppDomain.CurrentDomain.GetAllTypeFromDerived<BaseModuleConfig>())
             {
-                var menuItem   = editorModuleConfig.GetType().Name;
-                var configType = editorModuleConfig.ModuleConfigType;
-                this.ValidateConfig(folderPath, configType.Name, configType);
+                var nameType = type.Name;
+                this.ValidateConfig(folderPath, type.Name, type);
 
-                var assetPath = $"{folderPath}/{configType.Name}.asset";
-                tree.AddAssetAtPath(menuItem, assetPath, configType);
+                var assetPath = $"{folderPath}/{type.Name}.asset";
+                tree.AddAssetAtPath(nameType, assetPath, type);
             }
 
             return tree;

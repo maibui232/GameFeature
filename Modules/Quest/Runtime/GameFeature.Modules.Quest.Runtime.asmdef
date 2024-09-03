@@ -1,0 +1,8 @@
+{
+  "name": "GameFeature.Modules.Quest.Runtime",
+  "rootNamespace": "",
+  "references": [
+    "GUID:3ce41986b2834e2cbb8060169d2ac410"
+  ],
+  "autoReferenced": true
+}

@@ -1,5 +1,6 @@
 {
   "name": "GameFeature.Modules.BattlePass.Editor",
+  "rootNamespace": "",
   "includePlatforms": [
     "Editor"
   ],

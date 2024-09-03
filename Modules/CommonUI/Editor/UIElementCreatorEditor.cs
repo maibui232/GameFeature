@@ -1,4 +1,4 @@
-namespace CommonUI.Modules.CommonUI.Editor
+namespace Modules.CommonUI.Editor
 {
     using UnityEditor;
     using UnityEngine;

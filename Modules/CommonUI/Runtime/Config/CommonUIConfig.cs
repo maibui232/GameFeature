@@ -1,4 +1,4 @@
-namespace Feature.Modules.CommonUI.Runtime.Config
+namespace Modules.CommonUI.Runtime.Config
 {
     using ModuleConfig.Runtime;
 

@@ -1,4 +1,4 @@
-namespace Feature.Modules.CommonUI.Runtime.Popup
+namespace Modules.CommonUI.Runtime.Popup
 {
     using Cysharp.Threading.Tasks;
     using GameCore.Attribute;

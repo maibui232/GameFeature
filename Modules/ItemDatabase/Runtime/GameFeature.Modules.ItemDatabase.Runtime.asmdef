@@ -1,0 +1,18 @@
+{
+    "name": "GameFeature.Modules.ItemDatabase.Runtime",
+    "rootNamespace": "",
+    "references": [
+        "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
+        "GUID:e0a0d9284734fd442899981ea5581776",
+        "GUID:0817f3efa7db46ad8076402431b2ef88"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,6 +1,6 @@
 {
     "name": "GameFeature.Modules.CommonUI.Editor",
-    "rootNamespace": "CommonUI",
+    "rootNamespace": "",
     "references": [
         "GUID:ad968d605628d06499b62cdc30f11cf8",
         "GUID:e0a0d9284734fd442899981ea5581776",

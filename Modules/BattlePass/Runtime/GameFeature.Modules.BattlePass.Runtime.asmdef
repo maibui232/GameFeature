@@ -1,10 +1,11 @@
 {
     "name": "GameFeature.Modules.BattlePass.Runtime",
-    "rootNamespace": "Feature",
+    "rootNamespace": "",
     "references": [
         "GUID:593a5b492d29ac6448b1ebf7f035ef33",
         "GUID:f51ebe6a0ceec4240a699833d6309b23",
-        "GUID:0817f3efa7db46ad8076402431b2ef88"
+        "GUID:0817f3efa7db46ad8076402431b2ef88",
+        "GUID:e0a0d9284734fd442899981ea5581776"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

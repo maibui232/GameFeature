@@ -1,4 +1,4 @@
-namespace Feature.Modules.CommonUI.Runtime.Element
+namespace Modules.CommonUI.Runtime.Element
 {
     using System;
     using UnityEngine;
