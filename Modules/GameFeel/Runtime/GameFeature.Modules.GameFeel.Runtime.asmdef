@@ -1,0 +1,10 @@
+{
+  "name": "GameFeature.Modules.GameFeel.Runtime",
+  "references": [
+    "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
+    "GUID:7793e5cd8d2e94e21b56de41db6606bb",
+    "GUID:e0a0d9284734fd442899981ea5581776",
+    "GUID:f51ebe6a0ceec4240a699833d6309b23"
+  ],
+  "autoReferenced": true
+}

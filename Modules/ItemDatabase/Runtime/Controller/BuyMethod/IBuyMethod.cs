@@ -6,6 +6,6 @@ namespace Modules.ItemDatabase.Runtime.Controller.BuyMethod
     public interface IBuyMethod
     {
         string BuyMethodId { get; }
-        void   Process(GameObject source, int price, Action<string> onCompleted, Action<string> onFailed);
+        void   Process(GameObject source, GameObject target, int price, Action<string> onCompleted, Action<string> onFailed);
     }
 }

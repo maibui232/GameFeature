@@ -6,7 +6,7 @@ namespace Modules.ItemDatabase.Runtime.Controller
 
     public interface IItemDatabaseController
     {
-        void BuyItem(int itemId, Action<string> onCompleted, Action<string> onFailed);
+        void BuyItem(string itemId, Action<CurrencyCallbackData> onCompleted, Action<CurrencyCallbackData> onFailed);
 
         ShopItemDataRecord GetShopItemDataRecord(string itemId);
         ItemDataRecord     GetItemDataRecord(string     itemId);
@@ -17,29 +17,42 @@ namespace Modules.ItemDatabase.Runtime.Controller
     {
 #region Inject
 
-        private readonly ItemDatabaseUserData  itemDatabaseUserData;
-        private readonly ItemDataBlueprint     itemDataBlueprint;
-        private readonly ShopItemDataBlueprint shopItemDataBlueprint;
-        private readonly CurrencyBlueprint     currencyBlueprint;
+        private readonly ItemDatabaseUserData   itemDatabaseUserData;
+        private readonly ItemDataBlueprint      itemDataBlueprint;
+        private readonly ShopItemDataBlueprint  shopItemDataBlueprint;
+        private readonly CurrencyDataController currencyDataController;
 
 #endregion
 
         public ItemDatabaseController
         (
-            ItemDatabaseUserData  itemDatabaseUserData,
-            ItemDataBlueprint     itemDataBlueprint,
-            ShopItemDataBlueprint shopItemDataBlueprint,
-            CurrencyBlueprint     currencyBlueprint
+            ItemDatabaseUserData   itemDatabaseUserData,
+            ItemDataBlueprint      itemDataBlueprint,
+            ShopItemDataBlueprint  shopItemDataBlueprint,
+            CurrencyDataController currencyDataController
         )
         {
-            this.itemDatabaseUserData  = itemDatabaseUserData;
-            this.itemDataBlueprint     = itemDataBlueprint;
-            this.shopItemDataBlueprint = shopItemDataBlueprint;
-            this.currencyBlueprint     = currencyBlueprint;
+            this.itemDatabaseUserData   = itemDatabaseUserData;
+            this.itemDataBlueprint      = itemDataBlueprint;
+            this.shopItemDataBlueprint  = shopItemDataBlueprint;
+            this.currencyDataController = currencyDataController;
         }
 
-        public void BuyItem(int itemId, Action<string> onCompleted, Action<string> onFailed)
+        public void BuyItem(string itemId, Action<CurrencyCallbackData> onCompleted, Action<CurrencyCallbackData> onFailed)
         {
+            var shopItemRecord = this.GetShopItemDataRecord(itemId);
+            this.currencyDataController.AddCurrency(shopItemRecord.BuyMethodId, -shopItemRecord.Price, OnCompleted, OnFailed);
+            return;
+
+            void OnCompleted(CurrencyCallbackData data)
+            {
+                onCompleted?.Invoke(data);
+            }
+
+            void OnFailed(CurrencyCallbackData data)
+            {
+                onFailed?.Invoke(data);
+            }
         }
 
         public ShopItemDataRecord GetShopItemDataRecord(string itemId)

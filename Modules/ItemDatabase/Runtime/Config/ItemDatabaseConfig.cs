@@ -12,6 +12,8 @@ namespace Modules.ItemDatabase.Runtime.Config
             base.CreateBlueprint();
             this.CreateItemDataBlueprint();
             this.CreateShopItemDataBlueprint();
+            this.CreateItemCategoryBlueprint();
+            this.CreateCurrencyBlueprint();
         }
 
         private void CreateItemDataBlueprint()
@@ -23,7 +25,19 @@ namespace Modules.ItemDatabase.Runtime.Config
         private void CreateShopItemDataBlueprint()
         {
             const string header = "Id,BuyMethodId,Price";
-            this.CreateCsvFile("ShopItemData", header);
+            this.CreateCsvFile("ShopItemDataBlueprint", header);
+        }
+
+        private void CreateItemCategoryBlueprint()
+        {
+            const string header = "Category,IconAddressable";
+            this.CreateCsvFile("ItemCategoryBlueprint", header);
+        }
+
+        private void CreateCurrencyBlueprint()
+        {
+            const string header = "Id,Name,Min,Max,IconAddressable,VfxAddressable";
+            this.CreateCsvFile("CurrencyBlueprint", header);
         }
 #endif
     }

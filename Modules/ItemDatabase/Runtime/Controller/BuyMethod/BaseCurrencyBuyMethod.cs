@@ -1,31 +1,31 @@
 namespace Modules.ItemDatabase.Runtime.Controller.BuyMethod
 {
     using System;
-    using GameCore.Services.ObjectPool;
+    using Modules.GameFeel.Runtime.VfxAttractor;
     using UnityEngine;
 
-    public class CurrencyBuyMethod : IBuyMethod
+    public abstract class BaseCurrencyBuyMethod : IBuyMethod
     {
-#region Inject
+#region Injectt
 
         private readonly CurrencyDataController currencyDataController;
-        private readonly IObjectPoolService     objectPoolService;
+        private readonly IVfxAttractorService   attractorService;
 
 #endregion
 
-        public CurrencyBuyMethod
+        protected BaseCurrencyBuyMethod
         (
             CurrencyDataController currencyDataController,
-            IObjectPoolService     objectPoolService
+            IVfxAttractorService   attractorService
         )
         {
             this.currencyDataController = currencyDataController;
-            this.objectPoolService      = objectPoolService;
+            this.attractorService       = attractorService;
         }
 
-        public string BuyMethodId { get; internal set; }
+        public abstract string BuyMethodId { get; }
 
-        public void Process(GameObject source, int price, Action<string> onCompleted, Action<string> onFailed)
+        public void Process(GameObject source, GameObject target, int price, Action<string> onCompleted, Action<string> onFailed)
         {
             this.currencyDataController.AddCurrency(this.BuyMethodId, price, OnCompleted, OnFailed);
 
@@ -33,11 +33,11 @@ namespace Modules.ItemDatabase.Runtime.Controller.BuyMethod
 
             void OnCompleted(CurrencyCallbackData callbackData)
             {
-                if (source != null)
+                if (source != null && target != null)
                 {
                     // Show Vfx currency
-                    // var record = this.currencyDataController.GetCurrencyRecord(this.BuyMethodId);
-                    // this.objectPoolService.Spawn(record.VfxAddressable);
+                    var record = this.currencyDataController.GetCurrencyRecord(this.BuyMethodId);
+                    this.attractorService.SpawnAttractor(record.VfxAddressable, source.transform.position, target.transform);
                 }
 
                 onCompleted?.Invoke(callbackData.Msg);
