@@ -1,9 +1,13 @@
 namespace ModuleConfig.Runtime
 {
+    using System.Reflection;
     using Sirenix.OdinInspector;
     using UnityEngine;
+    using File = UnityEngine.Windows.File;
 #if UNITY_EDITOR
+    using System;
     using System.IO;
+    using GameCore.Services.BlueprintFlow.BlueprintReader;
     using GameExtensions.Editor;
     using UnityEditor;
 #endif
@@ -35,17 +39,85 @@ namespace ModuleConfig.Runtime
         {
         }
 
-        protected void CreateCsvFile(string fileName, string fileContent)
+        protected void CreateCsvFile(Type blueprintType)
         {
-            const string blueprintRootFolder = "Assets/Resources/BlueprintData/";
-            var          blueprintPath       = $"{blueprintRootFolder}{fileName}.csv";
-            var          asset               = AssetDatabase.LoadAssetAtPath<TextAsset>(blueprintPath);
+            var header = this.HeaderBlueprintFile(blueprintType);
+
+            if (string.IsNullOrEmpty(header)) return;
+
+            var filePath = this.BlueprintFilePath(blueprintType);
+            var asset    = AssetDatabase.LoadAssetAtPath<TextAsset>(filePath);
 
             if (asset != null) return;
-            using TextWriter writer = new StreamWriter(blueprintPath);
-            writer.WriteLine(fileContent);
-            writer.Close();
+
+            using (var writer = new StreamWriter(filePath))
+            {
+                writer.WriteLine(header);
+                writer.Close();
+            }
+
             AssetDatabase.Refresh();
+        }
+
+        protected void AppendTextToBlueprintFile(Type blueprintType, string content)
+        {
+            var filePath = this.BlueprintFilePath(blueprintType);
+            if (AssetDatabase.LoadAssetAtPath<TextAsset>(filePath) == null)
+            {
+                this.CreateCsvFile(blueprintType);
+            }
+
+            using (var writer = System.IO.File.AppendText(filePath))
+            {
+                writer.WriteLine(content);
+                writer.Close();
+            }
+
+            AssetDatabase.Refresh();
+        }
+
+        protected string BlueprintFilePath(Type blueprintType)
+        {
+            const string blueprintRootFolder = "Assets/Resources/BlueprintData/";
+            var          fileName            = blueprintType.GetCustomAttribute<BlueprintReaderAttribute>().DataPath;
+
+            return $"{blueprintRootFolder}{fileName}.csv";
+        }
+
+        protected string HeaderBlueprintFile(Type blueprintType)
+        {
+            if (blueprintType.BaseType == null) return string.Empty;
+            var genericArguments = blueprintType.BaseType.GetGenericArguments();
+
+            if (genericArguments.Length == 0) return string.Empty;
+
+            var recordType = blueprintType.BaseType.GetGenericArguments()[^1];
+            var header     = this.GetRecursiveHeaderBlueprint(recordType);
+            header = header.TrimEnd(',');
+
+            return header;
+        }
+
+        protected string GetRecursiveHeaderBlueprint(Type recordType)
+        {
+            var header = string.Empty;
+            foreach (var propInfo in recordType.GetProperties())
+            {
+                if (typeof(IBlueprintCollection).IsAssignableFrom(propInfo.PropertyType))
+                {
+                    if (propInfo.PropertyType.BaseType == null) continue;
+                    var genericArguments = propInfo.PropertyType.BaseType.GetGenericArguments();
+
+                    if (genericArguments.Length == 0) continue;
+                    header += this.GetRecursiveHeaderBlueprint(genericArguments[^1]);
+                }
+                else
+                {
+                    header += $"{propInfo.Name},";
+                }
+            }
+
+            return header;
         }
 #endif
     }

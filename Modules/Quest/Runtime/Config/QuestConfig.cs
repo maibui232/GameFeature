@@ -1,71 +1,55 @@
 namespace Modules.Quest.Runtime.Config
 {
+    using ModuleConfig.Runtime;
+#if UNITY_EDITOR
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using GameExtensions.Runtime.Reflection;
-    using ModuleConfig.Runtime;
+    using Modules.Quest.Runtime.Blueprint;
     using Modules.Quest.Runtime.Interface;
     using Newtonsoft.Json;
     using Sirenix.OdinInspector;
     using UnityEngine;
+#endif
 
     public class QuestConfig : BaseModuleConfig
     {
         protected override string ScriptDefineSymbol => "FEATURE_QUEST";
 
 #if UNITY_EDITOR
-        [SerializeField, BoxGroup("Config")] private string questId;
-        [SerializeField, BoxGroup("Config")] private string questName;
-        [SerializeField, BoxGroup("Config")] private string questDescription;
+        [SerializeField, InlineButton("LoadOrCreate")]
+        private string questId;
 
-#region Condition
+        [SerializeField, ShowIf("CanEdit")] private QuestConfigEditor questConfigEditor;
 
-        // Condition
-        [ShowInInspector, TabGroup("Quest")] private List<IQuestCondition> questConditions = new();
-
-        private Dictionary<string, Type> nameToQuestConditionMap = new();
-
-        private string[] ConditionDropdown()
+        private bool CanEdit
         {
-            return this.nameToQuestConditionMap.Keys.ToArray();
+            get
+            {
+                if (this.questConfigEditor == null) return false;
+
+                return !string.IsNullOrEmpty(this.questConfigEditor.QuestId);
+            }
         }
 
-        private void CreateCondition()
+        private void LoadOrCreate()
         {
-            if (string.IsNullOrEmpty(this.conditionType) || this.conditionType.Equals("Null")) return;
-            var type = this.nameToQuestConditionMap[this.conditionType];
-            this.questConditions.Add((IQuestCondition)Activator.CreateInstance(type));
         }
 
-        [ShowInInspector, TabGroup("Quest"), InlineButton("CreateCondition"), ValueDropdown("ConditionDropdown")]
-        private string conditionType;
-
-#endregion
-
-#region Reward
-
-        // Reward
-        [ShowInInspector, TabGroup("Reward")] private List<IQuestReward> questRewards = new();
-
-        [SerializeField, TabGroup("Reward"), InlineButton("CreateReward"), ValueDropdown("RewardDropdown")]
-        private string rewardType;
-
-        private Dictionary<string, Type> nameToQuestRewardMap = new();
-
-        private string[] RewardDropdown()
+        [Button(ButtonSizes.Gigantic), ShowIf("CanEdit")]
+        private void ConvertToCsvData()
         {
-            return this.nameToQuestRewardMap.Keys.ToArray();
+            this.AppendTextToBlueprintFile(typeof(QuestBlueprint), this.questConfigEditor.ConvertToCsvData());
         }
 
-        private void CreateReward()
+        protected override void CreateBlueprint()
         {
-            if (string.IsNullOrEmpty(this.rewardType) || this.rewardType.Equals("Null")) return;
-            var type = this.nameToQuestRewardMap[this.rewardType];
-            this.questRewards.Add((IQuestReward)Activator.CreateInstance(type));
+            this.CreateCsvFile(typeof(QuestBlueprint));
         }
 
-#endregion
+        private Dictionary<string, Type> nameToQuestConditionMap;
+        private Dictionary<string, Type> nameToQuestRewardMap;
 
         private void OnEnable()
         {
@@ -74,6 +58,90 @@ namespace Modules.Quest.Runtime.Config
             this.nameToQuestRewardMap = AppDomain.CurrentDomain.GetAllTypeFromDerived<IQuestReward>()
                .ToDictionary(type => type.Name, type => type);
         }
+
 #endif
     }
+
+#if UNITY_EDITOR
+    [Serializable]
+    public class QuestConfigEditor
+    {
+        [SerializeField, BoxGroup("Config")] private string questId;
+        [SerializeField, BoxGroup("Config")] private string questName;
+        [SerializeField, BoxGroup("Config")] private string questDescription;
+
+        // Condition
+        [ShowInInspector, TabGroup("Condition")]
+        private List<IQuestCondition> questConditions = new();
+
+        // Reward
+        [ShowInInspector, TabGroup("Reward")] private List<IQuestReward> questRewards = new();
+
+        public string                QuestId          => this.questId;
+        public string                QuestName        => this.questName;
+        public string                QuestDescription => this.questDescription;
+        public List<IQuestCondition> QuestConditions  => this.questConditions;
+        public List<IQuestReward>    QuestRewards     => this.questRewards;
+
+        public QuestConfigEditor(string questId)
+        {
+            this.questId = questId;
+        }
+
+        public QuestConfigEditor
+        (
+            string                questId,
+            string                questName,
+            string                questDescription,
+            List<IQuestReward>    questRewards,
+            List<IQuestCondition> questConditions
+        )
+        {
+            this.questId          = questId;
+            this.questName        = questName;
+            this.questDescription = questDescription;
+            this.questRewards     = questRewards;
+            this.questConditions  = questConditions;
+        }
+
+        private string ConvertListDataToJsonData<T>(List<T> inputData)
+        {
+            var data  = string.Empty;
+            var index = 0;
+            foreach (var input in inputData)
+            {
+                data = $"{input.GetType().Name}|{JsonConvert.SerializeObject(input)}";
+                if (index != inputData.Count - 1)
+                {
+                    data += ",";
+                }
+
+                index++;
+            }
+
+            if (data.Contains("\""))
+            {
+                data = data.Replace("\"", "\"\"");
+            }
+
+            if (data.Contains(",") || data.Contains("\"\""))
+            {
+                data = $"\"{data}\"";
+            }
+
+            return data;
+        }
+
+        public string ConvertToCsvData()
+        {
+            var text = $"{this.questId},"                                         +
+                       $"{this.questName},"                                       +
+                       $"{this.questDescription},"                                +
+                       $"{this.ConvertListDataToJsonData(this.questConditions)}," +
+                       $"{this.ConvertListDataToJsonData(this.questRewards)}";
+
+            return text;
+        }
+    }
+#endif
 }

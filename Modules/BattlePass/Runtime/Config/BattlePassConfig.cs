@@ -1,6 +1,7 @@
 namespace Modules.BattlePass.Runtime.Config
 {
     using ModuleConfig.Runtime;
+    using Modules.BattlePass.Runtime.Blueprint;
     using UnityEngine;
 
     public class BattlePassConfig : BaseModuleConfig
@@ -15,8 +16,7 @@ namespace Modules.BattlePass.Runtime.Config
         protected override void CreateBlueprint()
         {
             base.CreateBlueprint();
-            const string blueprintHeader = "BattlePassType,Level,Experience,RewardId,RewardValue,RewardIcon";
-            this.CreateCsvFile("BattlePassLevel", blueprintHeader);
+            this.CreateCsvFile(typeof(BattlePassLevelBlueprint));
         }
 #endif
     }
