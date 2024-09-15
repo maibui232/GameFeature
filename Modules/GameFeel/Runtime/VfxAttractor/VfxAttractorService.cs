@@ -4,7 +4,7 @@ namespace Modules.GameFeel.Runtime.VfxAttractor
     using System.Collections.Generic;
     using Coffee.UIExtensions;
     using Cysharp.Threading.Tasks;
-    using GameCore.Services.ObjectPool;
+    using Services.ObjectPool;
     using UnityEngine;
     using VContainer;
 

@@ -1,9 +1,9 @@
 namespace Modules.ItemDatabase.Runtime.UserData
 {
     using System.Collections.Generic;
-    using GameCore.Services.UserData.Interface;
     using Modules.ItemDatabase.Runtime.Blueprint;
     using Newtonsoft.Json;
+    using Services.UserData.Interface;
     using Sirenix.Serialization;
 
     public class ItemDatabaseUserData : IUserData

@@ -1,10 +1,10 @@
 namespace Modules.CommonUI.Runtime.Screen
 {
     using Cysharp.Threading.Tasks;
-    using GameCore.Services.BlueprintFlow.BlueprintControlFlow;
-    using GameCore.Services.Message;
-    using GameCore.Services.ScreenFlow.Base.Screen;
     using GameExtensions.Runtime.AsyncProgress;
+    using Services.BlueprintFlow.BlueprintControlFlow;
+    using Services.Message;
+    using Services.ScreenFlow.Base.Screen;
 
     public abstract class LoadingScreenPresenter<TView> : BaseScreenPresenter<TView> where TView : BaseScreenView
     {

@@ -1,7 +1,7 @@
 namespace Modules.BattlePass.Runtime.UserData
 {
     using System.Collections.Generic;
-    using GameCore.Services.UserData.Interface;
+    using Services.UserData.Interface;
 
     public class BattlePassUserData : IUserData
     {

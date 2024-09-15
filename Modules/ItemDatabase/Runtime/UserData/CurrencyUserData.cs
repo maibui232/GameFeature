@@ -1,7 +1,7 @@
 namespace Modules.ItemDatabase.Runtime.UserData
 {
     using System.Collections.Generic;
-    using GameCore.Services.UserData.Interface;
+    using Services.UserData.Interface;
     using Sirenix.Serialization;
 
     public class CurrencyUserData : IUserData

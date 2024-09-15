@@ -2,13 +2,13 @@ namespace Modules.CommonUI.Runtime.Element.ScrollAdapter
 {
     using System;
     using System.Collections.Generic;
-    using GameCore.Extensions;
-    using GameCore.Services.ScreenFlow.Base.Item;
     using Modules.CommonUI.Runtime.Element.ScrollAdapter.CellView;
     using Plugins.EnhancedScroller_v2.Plugins;
+    using Services.ScreenFlow.Base.Item;
     using UnityEngine;
     using UnityEngine.UI;
     using VContainer;
+    using VContainerProvider;
 
     public enum GridChildAlignment
     {

@@ -1,9 +1,9 @@
 namespace Modules.CommonUI.Runtime.Popup
 {
     using Cysharp.Threading.Tasks;
-    using GameCore.Attribute;
-    using GameCore.Services.Message;
-    using GameCore.Services.ScreenFlow.Base.Screen;
+    using Services.Message;
+    using Services.ScreenFlow.Attribute;
+    using Services.ScreenFlow.Base.Screen;
     using TMPro;
     using UnityEngine;
     using UnityEngine.UI;

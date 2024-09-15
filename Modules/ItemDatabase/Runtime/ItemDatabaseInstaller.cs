@@ -1,8 +1,8 @@
 namespace Modules.ItemDatabase.Runtime
 {
-    using GameCore.Extensions.VContainer.Installer;
     using Modules.ItemDatabase.Runtime.Controller;
     using VContainer;
+    using VContainerProvider.Scope.Installer;
 
     public class ItemDatabaseInstaller : Installer<ItemDatabaseInstaller>
     {

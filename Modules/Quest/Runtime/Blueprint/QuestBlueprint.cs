@@ -3,12 +3,12 @@ namespace Modules.Quest.Runtime.Blueprint
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using GameCore.Services.BlueprintFlow.BlueprintReader;
-    using GameCore.Services.BlueprintFlow.BlueprintReader.Converter;
-    using GameCore.Services.BlueprintFlow.BlueprintReader.Converter.TypeConversion;
     using GameExtensions.Runtime.Reflection;
     using Modules.Quest.Runtime.Interface;
     using Newtonsoft.Json;
+    using Services.BlueprintFlow.BlueprintReader;
+    using Services.BlueprintFlow.BlueprintReader.Converter;
+    using Services.BlueprintFlow.BlueprintReader.Converter.TypeConversion;
 
     [BlueprintReader("QuestBlueprint")]
     public class QuestBlueprint : GenericBlueprintReaderByRow<string, QuestRecord>

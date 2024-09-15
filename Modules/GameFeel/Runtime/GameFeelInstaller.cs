@@ -1,9 +1,9 @@
 namespace Modules.GameFeel.Runtime
 {
-    using GameCore.Extensions.VContainer.Installer;
     using Modules.GameFeel.Runtime.VfxAttractor;
     using VContainer;
     using VContainer.Unity;
+    using VContainerProvider.Scope.Installer;
 
     public class GameFeelInstaller : Installer<GameFeelInstaller, VfxAttractorService>
     {

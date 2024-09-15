@@ -1,6 +1,6 @@
 namespace Modules.ItemDatabase.Runtime.Blueprint
 {
-    using GameCore.Services.BlueprintFlow.BlueprintReader;
+    using Services.BlueprintFlow.BlueprintReader;
 
     [BlueprintReader("ItemDataBlueprint")]
     public class ItemDataBlueprint : GenericBlueprintReaderByRow<string, ItemDataRecord>

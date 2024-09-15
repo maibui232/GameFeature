@@ -1,8 +1,8 @@
 namespace ModuleConfig.Runtime
 {
     using System.Collections.Generic;
-    using GameCore.Extensions.VContainer.Installer;
     using VContainer;
+    using VContainerProvider.Scope.Installer;
 
     public class ModuleConfigInstaller : Installer<ModuleConfigInstaller, List<BaseModuleConfig>>
     {

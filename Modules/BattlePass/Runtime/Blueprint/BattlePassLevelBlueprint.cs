@@ -1,6 +1,6 @@
 namespace Modules.BattlePass.Runtime.Blueprint
 {
-    using GameCore.Services.BlueprintFlow.BlueprintReader;
+    using Services.BlueprintFlow.BlueprintReader;
 
     [BlueprintReader("BattlePassLevel")]
     public class BattlePassLevelBlueprint : GenericBlueprintReaderByRow<BattlePassType, BattlePassRecord>
