@@ -8,5 +8,11 @@ namespace Modules.Quest.Runtime.Condition
     {
         [ShowInInspector] public DateTime StartTime { get; private set; }
         [ShowInInspector] public DateTime EndTime   { get; private set; }
+
+        public LimitTimeCondition(DateTime startTime, DateTime endTime)
+        {
+            this.StartTime = startTime;
+            this.EndTime   = endTime;
+        }
     }
 }

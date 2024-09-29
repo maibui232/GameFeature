@@ -1,6 +1,8 @@
 namespace Modules.Quest.Runtime.Config
 {
+    using Cysharp.Threading.Tasks;
     using ModuleConfig.Runtime;
+    using Services.Blueprint.ReaderFlow;
 #if UNITY_EDITOR
     using System;
     using System.Collections.Generic;
@@ -8,7 +10,6 @@ namespace Modules.Quest.Runtime.Config
     using GameExtensions.Runtime.Reflection;
     using Modules.Quest.Runtime.Blueprint;
     using Modules.Quest.Runtime.Interface;
-    using Newtonsoft.Json;
     using Sirenix.OdinInspector;
     using UnityEngine;
 #endif
@@ -18,29 +19,32 @@ namespace Modules.Quest.Runtime.Config
         protected override string ScriptDefineSymbol => "FEATURE_QUEST";
 
 #if UNITY_EDITOR
-        [SerializeField, InlineButton("LoadOrCreate")]
-        private string questId;
 
-        [SerializeField, ShowIf("CanEdit")] private QuestConfigEditor questConfigEditor;
+        private QuestBlueprint questBlueprint;
+        private bool           CanSave => this.questBlueprint != null;
 
-        private bool CanEdit
+        [ShowInInspector, PropertyOrder(1)] private Dictionary<string, QuestRecordEditor> idToQuestRecordEditor = new();
+
+        [ButtonGroup, Button(ButtonSizes.Gigantic), PropertyOrder(0)]
+        private async void LoadBlueprint()
         {
-            get
+            this.questBlueprint = await EditorBlueprintReader.OpenReadBlueprint<QuestBlueprint>();
+            foreach (var (key, record) in this.questBlueprint)
             {
-                if (this.questConfigEditor == null) return false;
-
-                return !string.IsNullOrEmpty(this.questConfigEditor.QuestId);
+                this.idToQuestRecordEditor.Add(key, record);
             }
         }
 
-        private void LoadOrCreate()
+        [ButtonGroup, Button(ButtonSizes.Gigantic), PropertyOrder(0), ShowIf("CanSave")]
+        private void SaveBlueprint()
         {
-        }
+            this.questBlueprint.Clear();
+            foreach (var (key, record) in this.idToQuestRecordEditor)
+            {
+                this.questBlueprint.Add(key, QuestRecordExtensions.ToQuestRecord(record));
+            }
 
-        [Button(ButtonSizes.Gigantic), ShowIf("CanEdit")]
-        private void ConvertToCsvData()
-        {
-            this.AppendTextToBlueprintFile(typeof(QuestBlueprint), this.questConfigEditor.ConvertToCsvData());
+            EditorBlueprintReader.SaveBlueprint(this.questBlueprint).Forget();
         }
 
         protected override void CreateBlueprint()
@@ -48,100 +52,92 @@ namespace Modules.Quest.Runtime.Config
             this.CreateCsvFile(typeof(QuestBlueprint));
         }
 
-        private Dictionary<string, Type> nameToQuestConditionMap;
-        private Dictionary<string, Type> nameToQuestRewardMap;
-
-        private void OnEnable()
-        {
-            this.nameToQuestConditionMap = AppDomain.CurrentDomain.GetAllTypeFromDerived<IQuestCondition>()
-               .ToDictionary(type => type.Name, type => type);
-            this.nameToQuestRewardMap = AppDomain.CurrentDomain.GetAllTypeFromDerived<IQuestReward>()
-               .ToDictionary(type => type.Name, type => type);
-        }
-
 #endif
-    }
-
 #if UNITY_EDITOR
-    [Serializable]
-    public class QuestConfigEditor
-    {
-        [SerializeField, BoxGroup("Config")] private string questId;
-        [SerializeField, BoxGroup("Config")] private string questName;
-        [SerializeField, BoxGroup("Config")] private string questDescription;
-
-        // Condition
-        [ShowInInspector, TabGroup("Condition")]
-        private List<IQuestCondition> questConditions = new();
-
-        // Reward
-        [ShowInInspector, TabGroup("Reward")] private List<IQuestReward> questRewards = new();
-
-        public string                QuestId          => this.questId;
-        public string                QuestName        => this.questName;
-        public string                QuestDescription => this.questDescription;
-        public List<IQuestCondition> QuestConditions  => this.questConditions;
-        public List<IQuestReward>    QuestRewards     => this.questRewards;
-
-        public QuestConfigEditor(string questId)
+        [Serializable]
+        private class QuestRecordEditor
         {
-            this.questId = questId;
-        }
+            [ShowInInspector, TabGroup("Quest")] internal string Id          { get; set; }
+            [ShowInInspector, TabGroup("Quest")] internal string Name        { get; set; }
+            [ShowInInspector, TabGroup("Quest")] internal string Description { get; set; }
 
-        public QuestConfigEditor
-        (
-            string                questId,
-            string                questName,
-            string                questDescription,
-            List<IQuestReward>    questRewards,
-            List<IQuestCondition> questConditions
-        )
-        {
-            this.questId          = questId;
-            this.questName        = questName;
-            this.questDescription = questDescription;
-            this.questRewards     = questRewards;
-            this.questConditions  = questConditions;
-        }
+#region Condition
 
-        private string ConvertListDataToJsonData<T>(List<T> inputData)
-        {
-            var data  = string.Empty;
-            var index = 0;
-            foreach (var input in inputData)
+            [ShowInInspector, ValueDropdown("ConditionTypeNames"), LabelText("Type"), InlineButton("AddCondition"), TabGroup("Conditions")]
+            private string conditionTypeName;
+
+            [ShowInInspector, TabGroup("Conditions")]
+            internal List<IQuestCondition> Conditions { get; set; }
+
+            private string[] ConditionTypeNames() => QuestEditorHelper.NameToConditionTypeCache.Keys.ToArray();
+
+            private void AddCondition()
             {
-                data = $"{input.GetType().Name}|{JsonConvert.SerializeObject(input)}";
-                if (index != inputData.Count - 1)
+                if (string.IsNullOrEmpty(this.conditionTypeName)) return;
+                var type = QuestEditorHelper.NameToConditionTypeCache[this.conditionTypeName];
+                this.Conditions.Add((IQuestCondition)ReflectionExtensions.CreateInstanceWithDefaultParams(type));
+            }
+
+#endregion
+
+#region Reward
+
+            [ShowInInspector, ValueDropdown("RewardTypeNames"), LabelText("Type"), InlineButton("AddReward"), TabGroup("Rewards")]
+            private string rewardTypeName;
+
+            [ShowInInspector, TabGroup("Rewards")] internal List<IQuestReward> Rewards { get; set; }
+
+            private string[] RewardTypeNames() => QuestEditorHelper.NameToRewardTypeCache.Keys.ToArray();
+
+            private void AddReward()
+            {
+                if (string.IsNullOrEmpty(this.rewardTypeName)) return;
+                var type = QuestEditorHelper.NameToRewardTypeCache[this.rewardTypeName];
+                this.Rewards.Add((IQuestReward)ReflectionExtensions.CreateInstanceWithDefaultParams(type));
+            }
+
+#endregion
+
+            public QuestRecordEditor(string id, string name, string description, List<IQuestCondition> conditions, List<IQuestReward> rewards)
+            {
+                this.Id          = id;
+                this.Name        = name;
+                this.Description = description;
+                this.Conditions  = conditions;
+                this.Rewards     = rewards;
+            }
+
+            public static implicit operator QuestRecordEditor(QuestRecord record)
+            {
+                return new QuestRecordEditor(record.Id, record.Name, record.Description, record.Conditions, record.Rewards);
+            }
+        }
+
+        private static class QuestRecordExtensions
+        {
+            public static QuestRecord ToQuestRecord(QuestRecordEditor recordEditor)
+            {
+                var record = new QuestRecord();
+                foreach (var propInfo in recordEditor.GetType().GetProperties())
                 {
-                    data += ",";
+                    record.GetType().GetProperty(propInfo.Name)?.SetValue(record, propInfo.GetValue(recordEditor));
                 }
 
-                index++;
+                return record;
             }
-
-            if (data.Contains("\""))
-            {
-                data = data.Replace("\"", "\"\"");
-            }
-
-            if (data.Contains(",") || data.Contains("\"\""))
-            {
-                data = $"\"{data}\"";
-            }
-
-            return data;
         }
 
-        public string ConvertToCsvData()
+        private static class QuestEditorHelper
         {
-            var text = $"{this.questId},"                                         +
-                       $"{this.questName},"                                       +
-                       $"{this.questDescription},"                                +
-                       $"{this.ConvertListDataToJsonData(this.questConditions)}," +
-                       $"{this.ConvertListDataToJsonData(this.questRewards)}";
+            public static readonly Dictionary<string, Type> NameToConditionTypeCache;
+            public static readonly Dictionary<string, Type> NameToRewardTypeCache;
 
-            return text;
+            static QuestEditorHelper()
+            {
+                NameToConditionTypeCache = AppDomain.CurrentDomain.GetAllTypeFromDerived<IQuestCondition>().ToDictionary(type => type.Name, type => type);
+                NameToRewardTypeCache    = AppDomain.CurrentDomain.GetAllTypeFromDerived<IQuestReward>().ToDictionary(type => type.Name, type => type);
+            }
         }
-    }
 #endif
+    }
 }

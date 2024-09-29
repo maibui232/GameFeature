@@ -1,9 +1,10 @@
 namespace Modules.ItemDatabase.Runtime.Blueprint
 {
-    using Services.BlueprintFlow.BlueprintReader;
+    using Services.Blueprint.Attribute;
+    using Services.Blueprint.ReaderFlow.GenericReader;
 
-    [BlueprintReader("ShopItemDataBlueprint")]
-    public class ShopItemDataBlueprint : GenericBlueprintReaderByRow<string, ShopItemDataRecord>
+    [CsvReader("ShopItemDataBlueprint")]
+    public class ShopItemDataBlueprint : GenericBlueprintByRow<string, ShopItemDataRecord>
     {
     }
 

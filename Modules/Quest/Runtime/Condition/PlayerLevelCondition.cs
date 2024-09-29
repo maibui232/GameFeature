@@ -6,5 +6,10 @@ namespace Modules.Quest.Runtime.Condition
     public class PlayerLevelCondition : IQuestCondition
     {
         [ShowInInspector] public int Level { get; private set; }
+
+        public PlayerLevelCondition(int level)
+        {
+            this.Level = level;
+        }
     }
 }

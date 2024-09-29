@@ -1,6 +1,5 @@
 namespace Modules.BattlePass.Runtime
 {
-    using System.Collections.Generic;
     using ModuleConfig.Runtime;
     using Modules.BattlePass.Runtime.Blueprint;
     using Modules.BattlePass.Runtime.Config;
@@ -49,16 +48,16 @@ namespace Modules.BattlePass.Runtime
 
         public BattlePassLevelRecord GetLevelRecord(BattlePassType battlePassType, int level)
         {
-            var battlePassLevels = this.battlePassLevelBlueprint.GetDataById(battlePassType);
+            var battlePassLevels = this.battlePassLevelBlueprint.GetRecordByKey(battlePassType);
 
-            return battlePassLevels.LevelRecord.GetValueOrDefault(level);
+            return battlePassLevels.LevelRecord[level];
         }
 
         public BattlePassLevelRewardRecord GetLevelRewardRecord(BattlePassType battlePassType, int level, string rewardId)
         {
             var levelRecord = this.GetLevelRecord(battlePassType, level);
 
-            return levelRecord?.LevelRewardRecord.GetValueOrDefault(rewardId);
+            return levelRecord?.LevelRewardRecord[rewardId];
         }
     }
 }

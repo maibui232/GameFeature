@@ -54,7 +54,7 @@ namespace Modules.ItemDatabase.Runtime.Controller
 
         public CurrencyRecord GetCurrencyRecord(string id)
         {
-            return this.currencyBlueprint.GetDataById(id);
+            return this.currencyBlueprint.GetRecordByKey(id);
         }
 
         public void AddCurrency

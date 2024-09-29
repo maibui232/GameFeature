@@ -2,11 +2,11 @@
     "name": "GameFeature.Modules.BattlePass.Runtime",
     "rootNamespace": "",
     "references": [
-        "GUID:593a5b492d29ac6448b1ebf7f035ef33",
-        "GUID:f51ebe6a0ceec4240a699833d6309b23",
-        "GUID:0817f3efa7db46ad8076402431b2ef88",
-        "GUID:2c15cf1c2b12449cb91068a98ef7aee9",
-        "GUID:2f7a5aa5d74d4cf58ae9735b8ef05f39"
+        "UniTask.Addressables",
+        "UniTask",
+        "GameFeature.ModuleConfig.Runtime",
+        "GameCore.Runtime.UserData",
+        "GameCore.Runtime.Blueprint"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

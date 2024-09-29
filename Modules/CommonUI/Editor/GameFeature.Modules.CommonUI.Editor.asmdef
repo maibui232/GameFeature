@@ -2,13 +2,12 @@
     "name": "GameFeature.Modules.CommonUI.Editor",
     "rootNamespace": "",
     "references": [
-        "GUID:ad968d605628d06499b62cdc30f11cf8",
-        "GUID:e0a0d9284734fd442899981ea5581776",
-        "GUID:65d2707788b486546b50df120ff0d59b",
-        "GUID:0616254a26100454494a432415b66637",
-        "GUID:02c11f442ffc148a9b44d2aa0618ec34",
-        "GUID:5bf991f1976349dc8425d4aec532e38b",
-        "GUID:78499feba5fe4f678b11af908f49aabe"
+        "Sirenix.OdinInspector.Modules.UnityMathematics",
+        "GameCore.Editor",
+        "GameFeature.Modules.CommonUI.Runtime",
+        "EnhancedScroller_asmdef",
+        "Game.Extensions.Runtime",
+        "GameFeature.ModuleConfig.Editor"
     ],
     "includePlatforms": [
         "Editor"

@@ -1,44 +1,13 @@
 namespace Modules.Quest.Runtime.Blueprint
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using GameExtensions.Runtime.Reflection;
     using Modules.Quest.Runtime.Interface;
-    using Newtonsoft.Json;
-    using Services.BlueprintFlow.BlueprintReader;
-    using Services.BlueprintFlow.BlueprintReader.Converter;
-    using Services.BlueprintFlow.BlueprintReader.Converter.TypeConversion;
+    using Services.Blueprint.Attribute;
+    using Services.Blueprint.ReaderFlow.GenericReader;
 
-    [BlueprintReader("QuestBlueprint")]
-    public class QuestBlueprint : GenericBlueprintReaderByRow<string, QuestRecord>
+    [CsvReader("QuestBlueprint")]
+    public class QuestBlueprint : GenericBlueprintByRow<string, QuestRecord>
     {
-        public QuestBlueprint()
-        {
-            CsvHelper.RegisterTypeConverter(typeof(IQuestCondition), new TypeToJsonConverter<IQuestCondition>());
-            CsvHelper.RegisterTypeConverter(typeof(IQuestReward), new TypeToJsonConverter<IQuestReward>());
-        }
-    }
-
-    public class TypeToJsonConverter<T> : DefaultTypeConverter
-    {
-        private const    string                   Delimiter = "|";
-        private readonly Dictionary<string, Type> nameToType;
-
-        public TypeToJsonConverter()
-        {
-            this.nameToType = AppDomain.CurrentDomain.GetAllTypeFromDerived<T>()
-               .ToDictionary(type => type.Name, type => type);
-        }
-
-        public override object ConvertFromString(string text, Type typeInfo)
-        {
-            var splits  = text.Split(Delimiter);
-            var dataTxt = splits[1];
-            var type    = this.nameToType[splits[0]];
-
-            return JsonConvert.DeserializeObject(dataTxt, type);
-        }
     }
 
     [CsvHeaderKey("Id")]

@@ -2,21 +2,21 @@ namespace Modules.CommonUI.Runtime.Screen
 {
     using Cysharp.Threading.Tasks;
     using GameExtensions.Runtime.AsyncProgress;
-    using Services.BlueprintFlow.BlueprintControlFlow;
+    using Services.Blueprint.ReaderFlow;
     using Services.Message;
     using Services.ScreenFlow.Base.Screen;
 
     public abstract class LoadingScreenPresenter<TView> : BaseScreenPresenter<TView> where TView : BaseScreenView
     {
-        private readonly BlueprintReaderManager blueprintReaderManager;
+        private readonly IBlueprintReaderServices blueprintReaderService;
 
         protected LoadingScreenPresenter
         (
-            IMessageService        messageService,
-            BlueprintReaderManager blueprintReaderManager
+            IMessageService          messageService,
+            IBlueprintReaderServices blueprintReaderService
         ) : base(messageService)
         {
-            this.blueprintReaderManager = blueprintReaderManager;
+            this.blueprintReaderService = blueprintReaderService;
         }
 
         private UniTaskProgressHandler asyncProgressHandler;
@@ -29,7 +29,7 @@ namespace Modules.CommonUI.Runtime.Screen
             this.AsyncProgressHandler.CompletedEvent      += this.OnCompleted;
             this.OnLoading(0);
 
-            this.AsyncProgressHandler.TrackUniTask(this.blueprintReaderManager.LoadBlueprint());
+            this.AsyncProgressHandler.TrackUniTask(this.blueprintReaderService.ReadAllBlueprintsAsync());
 
             return UniTask.CompletedTask;
         }

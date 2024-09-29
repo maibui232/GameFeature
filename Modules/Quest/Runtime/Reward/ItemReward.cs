@@ -7,5 +7,11 @@ namespace Modules.Quest.Runtime.Reward
     {
         [ShowInInspector] public string ItemId { get; private set; }
         [ShowInInspector] public int    Amount { get; private set; } = 1;
+
+        public ItemReward(string itemId, int amount)
+        {
+            this.ItemId = itemId;
+            this.Amount = amount;
+        }
     }
 }

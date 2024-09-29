@@ -1,9 +1,10 @@
 namespace Modules.ItemDatabase.Runtime.Blueprint
 {
-    using Services.BlueprintFlow.BlueprintReader;
+    using Services.Blueprint.Attribute;
+    using Services.Blueprint.ReaderFlow.GenericReader;
 
-    [BlueprintReader("CurrencyBlueprint")]
-    public class CurrencyBlueprint : GenericBlueprintReaderByRow<string, CurrencyRecord>
+    [CsvReader("CurrencyBlueprint")]
+    public class CurrencyBlueprint : GenericBlueprintByRow<string, CurrencyRecord>
     {
     }
 

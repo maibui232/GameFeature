@@ -8,6 +8,7 @@ namespace Modules.CommonUI.Runtime.Element.ScrollAdapter
     using UnityEngine;
     using UnityEngine.UI;
     using VContainer;
+    using VContainer.Unity;
     using VContainerProvider;
 
     public enum GridChildAlignment
@@ -113,7 +114,7 @@ namespace Modules.CommonUI.Runtime.Element.ScrollAdapter
                 return presenter;
             }
 
-            var instancePresenter = this.resolver.InstantiateConcrete<TPresenter>();
+            var instancePresenter = this.resolver.Instantiate<TPresenter>();
             instancePresenter.SetView(view);
             instancePresenter.OpenView();
             instancePresenter.InitView();

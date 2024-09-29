@@ -57,12 +57,12 @@ namespace Modules.ItemDatabase.Runtime.Controller
 
         public ShopItemDataRecord GetShopItemDataRecord(string itemId)
         {
-            return this.shopItemDataBlueprint.GetDataById(itemId);
+            return this.shopItemDataBlueprint.GetRecordByKey(itemId);
         }
 
         public ItemDataRecord GetItemDataRecord(string itemId)
         {
-            return this.itemDataBlueprint.GetDataById(itemId);
+            return this.itemDataBlueprint.GetRecordByKey(itemId);
         }
 
         public ItemData GetItemData(string itemId, ItemStatus initialStatus = ItemStatus.Locked)

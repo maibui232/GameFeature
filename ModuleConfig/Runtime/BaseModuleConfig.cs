@@ -1,13 +1,14 @@
 namespace ModuleConfig.Runtime
 {
     using System.Reflection;
-    using Services.BlueprintFlow.BlueprintReader;
     using Sirenix.OdinInspector;
     using UnityEngine;
 #if UNITY_EDITOR
     using System;
     using System.IO;
     using GameExtensions.Editor;
+    using Services.Blueprint.Attribute;
+    using Services.Blueprint.ReaderFlow.GenericReader;
     using UnityEditor;
 #endif
 
@@ -78,7 +79,7 @@ namespace ModuleConfig.Runtime
         protected string BlueprintFilePath(Type blueprintType)
         {
             const string blueprintRootFolder = "Assets/Resources/BlueprintData/";
-            var          fileName            = blueprintType.GetCustomAttribute<BlueprintReaderAttribute>().DataPath;
+            var          fileName            = blueprintType.GetCustomAttribute<CsvReaderAttribute>().Path;
 
             return $"{blueprintRootFolder}{fileName}.csv";
         }

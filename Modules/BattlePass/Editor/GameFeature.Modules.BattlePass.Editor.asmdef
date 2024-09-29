@@ -5,7 +5,7 @@
     "Editor"
   ],
   "references": [
-    "GUID:78499feba5fe4f678b11af908f49aabe",
-    "GUID:128d1499f0b06415eb8742950a271219"
+    "GameFeature.ModuleConfig.Editor",
+    "GameFeature.Modules.BattlePass.Runtime"
   ]
 }

@@ -1,9 +1,10 @@
 namespace Modules.BattlePass.Runtime.Blueprint
 {
-    using Services.BlueprintFlow.BlueprintReader;
+    using Services.Blueprint.Attribute;
+    using Services.Blueprint.ReaderFlow.GenericReader;
 
-    [BlueprintReader("BattlePassLevel")]
-    public class BattlePassLevelBlueprint : GenericBlueprintReaderByRow<BattlePassType, BattlePassRecord>
+    [CsvReader("BattlePassLevel")]
+    public class BattlePassLevelBlueprint : GenericBlueprintByRow<BattlePassType, BattlePassRecord>
     {
     }
 

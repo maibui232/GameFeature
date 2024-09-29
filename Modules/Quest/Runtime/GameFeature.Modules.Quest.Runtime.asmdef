@@ -2,11 +2,12 @@
   "name": "GameFeature.Modules.Quest.Runtime",
   "rootNamespace": "",
   "references": [
-    "GUID:3ce41986b2834e2cbb8060169d2ac410",
-    "GUID:0817f3efa7db46ad8076402431b2ef88",
-    "GUID:e0a0d9284734fd442899981ea5581776",
-    "GUID:5bf991f1976349dc8425d4aec532e38b",
-    "GUID:2c15cf1c2b12449cb91068a98ef7aee9"
+    "GameFeature.Modules.ItemDatabase.Runtime",
+    "GameFeature.ModuleConfig.Runtime",
+    "Game.Extensions.Runtime",
+    "GameCore.Runtime.BlueprintFlow",
+    "UniTask",
+    "GameCore.Runtime.Blueprint"
   ],
   "autoReferenced": true
 }
