@@ -1,5 +1,6 @@
 namespace Modules.Quest.Runtime.Config
 {
+    using System.Reflection;
     using Cysharp.Threading.Tasks;
     using ModuleConfig.Runtime;
     using Services.Blueprint.ReaderFlow;
@@ -11,7 +12,6 @@ namespace Modules.Quest.Runtime.Config
     using Modules.Quest.Runtime.Blueprint;
     using Modules.Quest.Runtime.Interface;
     using Sirenix.OdinInspector;
-    using UnityEngine;
 #endif
 
     public class QuestConfig : BaseModuleConfig
@@ -118,7 +118,7 @@ namespace Modules.Quest.Runtime.Config
             public static QuestRecord ToQuestRecord(QuestRecordEditor recordEditor)
             {
                 var record = new QuestRecord();
-                foreach (var propInfo in recordEditor.GetType().GetProperties())
+                foreach (var propInfo in recordEditor.GetType().GetRuntimeProperties())
                 {
                     record.GetType().GetProperty(propInfo.Name)?.SetValue(record, propInfo.GetValue(recordEditor));
                 }

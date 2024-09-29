@@ -32,7 +32,7 @@ namespace Modules.Quest.Runtime.Blueprint
 
         public override string SerializeToCsv(Type type, object value)
         {
-            var typeName = typeof(T).Name;
+            var typeName = type.Name;
             var jsonData = JsonConvert.SerializeObject(value);
 
             return $"{typeName}{Delimiter}{jsonData}";
