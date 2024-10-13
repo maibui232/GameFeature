@@ -3,5 +3,6 @@
   "rootNamespace": "",
   "includePlatforms": [
     "Editor"
-  ]
+  ],
+  "references":[ "GUID:0be767aa6f18745bbb5156fe2db84e58" ]
 }

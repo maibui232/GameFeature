@@ -5,9 +5,11 @@
     "GameFeature.Modules.ItemDatabase.Runtime",
     "GameFeature.ModuleConfig.Runtime",
     "Game.Extensions.Runtime",
-    "GameCore.Runtime.BlueprintFlow",
     "UniTask",
-    "GameCore.Runtime.Blueprint"
+    "GameCore.Runtime.Blueprint",
+    "GameCore.Runtime.UserData",
+    "VContainer",
+    "GameCore.Runtime.Message"
   ],
   "autoReferenced": true
 }
