@@ -57,7 +57,7 @@ namespace Modules.BattlePass.Runtime
         {
             var levelRecord = this.GetLevelRecord(battlePassType, level);
 
-            return levelRecord?.LevelRewardRecord[rewardId];
+            return levelRecord?.IdToRewards[rewardId];
         }
     }
 }

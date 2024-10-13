@@ -2,6 +2,7 @@ namespace Modules.ItemDatabase.Runtime.Blueprint
 {
     using Services.Blueprint.Attribute;
     using Services.Blueprint.ReaderFlow.GenericReader;
+    using Sirenix.Serialization;
 
     [CsvReader("ItemCategoryBlueprint")]
     public class ItemCategoryBlueprint : GenericBlueprintByRow<string, ItemCategoryRecord>
@@ -11,7 +12,7 @@ namespace Modules.ItemDatabase.Runtime.Blueprint
     [CsvHeaderKey("Category")]
     public class ItemCategoryRecord
     {
-        public string Category        { get; set; }
-        public string IconAddressable { get; set; }
+        [OdinSerialize]public string Category        { get; set; }
+        [OdinSerialize]public string IconAddressable { get; set; }
     }
 }

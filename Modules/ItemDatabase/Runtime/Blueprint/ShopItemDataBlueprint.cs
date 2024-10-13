@@ -2,6 +2,7 @@ namespace Modules.ItemDatabase.Runtime.Blueprint
 {
     using Services.Blueprint.Attribute;
     using Services.Blueprint.ReaderFlow.GenericReader;
+    using Sirenix.Serialization;
 
     [CsvReader("ShopItemDataBlueprint")]
     public class ShopItemDataBlueprint : GenericBlueprintByRow<string, ShopItemDataRecord>
@@ -11,8 +12,8 @@ namespace Modules.ItemDatabase.Runtime.Blueprint
     [CsvHeaderKey("Id")]
     public class ShopItemDataRecord
     {
-        public string Id          { get; set; }
-        public string BuyMethodId { get; set; }
-        public int    Price       { get; set; }
+        [OdinSerialize] public string Id          { get; set; }
+        [OdinSerialize] public string BuyMethodId { get; set; }
+        [OdinSerialize] public int    Price       { get; set; }
     }
 }

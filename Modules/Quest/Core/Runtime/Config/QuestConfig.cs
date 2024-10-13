@@ -1,17 +1,8 @@
 namespace Modules.Quest.Core.Runtime.Config
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
     using Cysharp.Threading.Tasks;
-    using GameExtensions.Runtime.Reflection;
     using ModuleConfig.Runtime;
     using Modules.Quest.Core.Runtime.Blueprint;
-    using Modules.Quest.Core.Runtime.Model;
-    using Modules.Quest.Core.Runtime.Model.Condition;
-    using Modules.Quest.Core.Runtime.Model.Progress;
-    using Modules.Quest.Core.Runtime.Model.Reward;
     using Services.Blueprint.ReaderFlow;
     using Sirenix.OdinInspector;
 
@@ -21,36 +12,27 @@ namespace Modules.Quest.Core.Runtime.Config
 
 #if UNITY_EDITOR
 
-        private QuestBlueprint questBlueprint;
-        private bool           CanSave => this.questBlueprint != null;
+        protected override void OnEnableChange(bool isEnable)
+        {
+            base.OnEnableChange(isEnable);
+            if (isEnable)
+            {
+                this.LoadBlueprint<QuestBlueprint>().Forget();
+            }
+        }
 
-        [ShowInInspector, PropertyOrder(1)] private Dictionary<string, QuestRecord> idToQuestRecordEditor = new();
+        [ShowInInspector, PropertyOrder(1)] private QuestBlueprint questBlueprint;
 
         [ButtonGroup, Button(ButtonSizes.Gigantic), PropertyOrder(0)]
         private async void LoadBlueprint()
         {
-            this.questBlueprint = await EditorBlueprintReader.OpenReadBlueprint<QuestBlueprint>();
-            foreach (var (key, record) in this.questBlueprint)
-            {
-                this.idToQuestRecordEditor.Add(key, record);
-            }
+            this.questBlueprint = await this.LoadBlueprint<QuestBlueprint>();
         }
 
-        [ButtonGroup, Button(ButtonSizes.Gigantic), PropertyOrder(0), ShowIf("CanSave")]
+        [ButtonGroup, Button(ButtonSizes.Gigantic), PropertyOrder(0)]
         private void SaveBlueprint()
         {
-            this.questBlueprint.Clear();
-            foreach (var (key, record) in this.idToQuestRecordEditor)
-            {
-                this.questBlueprint.Add(key, record);
-            }
-
             EditorBlueprintReader.SaveBlueprint(this.questBlueprint).Forget();
-        }
-
-        protected override void CreateBlueprint()
-        {
-            this.CreateCsvFile(typeof(QuestBlueprint));
         }
     }
 #endif

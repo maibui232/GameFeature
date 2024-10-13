@@ -1,7 +1,10 @@
 namespace Modules.BattlePass.Runtime.Config
 {
+    using Cysharp.Threading.Tasks;
     using ModuleConfig.Runtime;
     using Modules.BattlePass.Runtime.Blueprint;
+    using Services.Blueprint.ReaderFlow;
+    using Sirenix.OdinInspector;
     using UnityEngine;
 
     public class BattlePassConfig : BaseModuleConfig
@@ -13,10 +16,31 @@ namespace Modules.BattlePass.Runtime.Config
         protected override string ScriptDefineSymbol => "FEATURE_BATTLE_PASS";
 
 #if UNITY_EDITOR
-        protected override void CreateBlueprint()
+        protected override void OnEnableChange(bool isEnable)
         {
-            base.CreateBlueprint();
-            this.CreateCsvFile(typeof(BattlePassLevelBlueprint));
+            base.OnEnableChange(isEnable);
+            if (isEnable)
+            {
+                this.LoadBlueprint<BattlePassLevelBlueprint>().Forget();
+            }
+        }
+
+        [PropertyOrder(1)] [ShowInInspector] private BattlePassLevelBlueprint battlePassLevelBlueprint;
+
+        [PropertyOrder(0)]
+        [ButtonGroup]
+        [Button(ButtonSizes.Gigantic)]
+        private async void LoadBlueprint()
+        {
+            this.battlePassLevelBlueprint = await this.LoadBlueprint<BattlePassLevelBlueprint>();
+        }
+
+        [PropertyOrder(0)]
+        [ButtonGroup]
+        [Button(ButtonSizes.Gigantic)]
+        private void SaveBlueprint()
+        {
+            EditorBlueprintReader.SaveBlueprint(this.battlePassLevelBlueprint).Forget();
         }
 #endif
     }

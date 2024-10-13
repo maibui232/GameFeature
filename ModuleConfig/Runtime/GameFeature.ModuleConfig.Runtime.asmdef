@@ -4,6 +4,7 @@
     "GameExtensions.Editor",
     "VContainer",
     "GameCore.Runtime.Blueprint",
-    "GameCore.Runtime.VContainerProvider"
+    "GameCore.Runtime.VContainerProvider",
+    "UniTask"
   ]
 }

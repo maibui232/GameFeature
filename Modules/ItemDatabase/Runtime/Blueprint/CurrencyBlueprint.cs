@@ -2,6 +2,7 @@ namespace Modules.ItemDatabase.Runtime.Blueprint
 {
     using Services.Blueprint.Attribute;
     using Services.Blueprint.ReaderFlow.GenericReader;
+    using Sirenix.Serialization;
 
     [CsvReader("CurrencyBlueprint")]
     public class CurrencyBlueprint : GenericBlueprintByRow<string, CurrencyRecord>
@@ -11,11 +12,11 @@ namespace Modules.ItemDatabase.Runtime.Blueprint
     [CsvHeaderKey("Id")]
     public class CurrencyRecord
     {
-        public string Id              { get; set; }
-        public string Name            { get; set; }
-        public int    Min             { get; set; }
-        public int    Max             { get; set; }
-        public string IconAddressable { get; set; }
-        public string VfxAddressable  { get; set; }
+        [OdinSerialize] public string Id              { get; set; }
+        [OdinSerialize] public string Name            { get; set; }
+        [OdinSerialize] public int    Min             { get; set; }
+        [OdinSerialize] public int    Max             { get; set; }
+        [OdinSerialize] public string IconAddressable { get; set; }
+        [OdinSerialize] public string VfxAddressable  { get; set; }
     }
 }
