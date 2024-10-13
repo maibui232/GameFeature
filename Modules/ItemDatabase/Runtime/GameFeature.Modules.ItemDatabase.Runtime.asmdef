@@ -9,7 +9,8 @@
     "GameCore.Runtime.Blueprint",
     "GameFeature.ModuleConfig.Runtime",
     "GameFeature.Modules.GameFeel.Runtime",
-    "GameCore.Runtime.VContainerProvider"
+    "GameCore.Runtime.VContainerProvider",
+    "GameCore.Runtime.Message"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],

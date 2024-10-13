@@ -2,7 +2,9 @@ namespace Modules.ItemDatabase.Runtime.Controller
 {
     using System;
     using Modules.ItemDatabase.Runtime.Blueprint;
+    using Modules.ItemDatabase.Runtime.Message;
     using Modules.ItemDatabase.Runtime.UserData;
+    using Services.Message;
 
     public interface IItemDatabaseController
     {
@@ -11,12 +13,15 @@ namespace Modules.ItemDatabase.Runtime.Controller
         ShopItemDataRecord GetShopItemDataRecord(string itemId);
         ItemDataRecord     GetItemDataRecord(string     itemId);
         ItemData           GetItemData(string           itemId, ItemStatus initialStatus = ItemStatus.Locked);
+        void               UnlockedItem(string          itemId);
+        void               OwnedItem(string             itemId);
     }
 
     public class ItemDatabaseController : IItemDatabaseController
     {
 #region Inject
 
+        private readonly IMessageService        messageService;
         private readonly ItemDatabaseUserData   itemDatabaseUserData;
         private readonly ItemDataBlueprint      itemDataBlueprint;
         private readonly ShopItemDataBlueprint  shopItemDataBlueprint;
@@ -26,12 +31,14 @@ namespace Modules.ItemDatabase.Runtime.Controller
 
         public ItemDatabaseController
         (
+            IMessageService        messageService,
             ItemDatabaseUserData   itemDatabaseUserData,
             ItemDataBlueprint      itemDataBlueprint,
             ShopItemDataBlueprint  shopItemDataBlueprint,
             CurrencyDataController currencyDataController
         )
         {
+            this.messageService         = messageService;
             this.itemDatabaseUserData   = itemDatabaseUserData;
             this.itemDataBlueprint      = itemDataBlueprint;
             this.shopItemDataBlueprint  = shopItemDataBlueprint;
@@ -42,6 +49,7 @@ namespace Modules.ItemDatabase.Runtime.Controller
         {
             var shopItemRecord = this.GetShopItemDataRecord(itemId);
             this.currencyDataController.AddCurrency(shopItemRecord.BuyMethodId, -shopItemRecord.Price, OnCompleted, OnFailed);
+
             return;
 
             void OnCompleted(CurrencyCallbackData data)
@@ -86,6 +94,23 @@ namespace Modules.ItemDatabase.Runtime.Controller
                 data.ShopItemDataRecord = this.GetShopItemDataRecord(itemId);
                 data.ItemDataRecord     = this.GetItemDataRecord(itemId);
             }
+        }
+
+        public void UnlockedItem(string itemId)
+        {
+            this.SetItemStatus(itemId, ItemStatus.Unlocked);
+        }
+
+        public void OwnedItem(string itemId)
+        {
+            this.SetItemStatus(itemId, ItemStatus.Owned);
+        }
+
+        private void SetItemStatus(string itemId, ItemStatus status)
+        {
+            this.messageService.Publish(new ItemStatusChangedMessage(itemId, status));
+            var itemData = this.GetItemData(itemId, ItemStatus.Unlocked);
+            itemData.ItemStatus = status;
         }
     }
 }

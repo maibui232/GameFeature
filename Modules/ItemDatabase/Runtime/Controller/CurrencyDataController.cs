@@ -2,7 +2,9 @@ namespace Modules.ItemDatabase.Runtime.Controller
 {
     using System;
     using Modules.ItemDatabase.Runtime.Blueprint;
+    using Modules.ItemDatabase.Runtime.Message;
     using Modules.ItemDatabase.Runtime.UserData;
+    using Services.Message;
     using UnityEngine;
 
     public interface ICurrencyDataController
@@ -23,6 +25,7 @@ namespace Modules.ItemDatabase.Runtime.Controller
     {
 #region Inject
 
+        private readonly IMessageService   messageService;
         private readonly CurrencyBlueprint currencyBlueprint;
         private readonly CurrencyUserData  currencyUserData;
 
@@ -30,10 +33,12 @@ namespace Modules.ItemDatabase.Runtime.Controller
 
         public CurrencyDataController
         (
+            IMessageService   messageService,
             CurrencyBlueprint currencyBlueprint,
             CurrencyUserData  currencyUserData
         )
         {
+            this.messageService    = messageService;
             this.currencyBlueprint = currencyBlueprint;
             this.currencyUserData  = currencyUserData;
         }
@@ -77,6 +82,11 @@ namespace Modules.ItemDatabase.Runtime.Controller
                 }
 
                 currencyData.UsedValue += Mathf.Abs(additionValue);
+                this.messageService.Publish(new SpendCurrencyMessage(id, Mathf.Abs(additionValue)));
+            }
+            else
+            {
+                this.messageService.Publish(new CollectCurrencyMessage(id, additionValue));
             }
 
             currencyData.Value += additionValue;
