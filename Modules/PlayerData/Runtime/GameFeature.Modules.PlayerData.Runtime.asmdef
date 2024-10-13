@@ -1,0 +1,8 @@
+{
+  "name": "GameFeature.Modules.PlayerData.Runtime",
+  "references": [
+    "GameCore.Runtime.Blueprint",
+    "GameCore.Runtime.Message",
+    "GameCore.Runtime.UserData"
+  ]
+}
